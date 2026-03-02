@@ -1,35 +1,25 @@
 """
-Django settings for backend project.
+Django settings for backend project (Production Ready)
 """
 
 import os
-import dj_database_url  # type: ignore
 from pathlib import Path
+import dj_database_url  # type: ignore
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-try:
-    from dotenv import load_dotenv  # type: ignore
-except ModuleNotFoundError:
-    load_dotenv = None
 
-if load_dotenv:
-    load_dotenv(BASE_DIR.parent.parent / ".env")
+# ===============================
+# BASIC SETTINGS
+# ===============================
 
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY", "unsafe-secret-key")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-
-# ===============================
-# ALLOWED HOSTS
-# ===============================
-
-raw_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(",") if host.strip()]
-
-if DEBUG and not ALLOWED_HOSTS:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
+ALLOWED_HOSTS = [
+    "deploy-medassist-chatbot.onrender.com",
+]
 
 
 # ===============================
@@ -45,7 +35,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
-    "rest_framework.authtoken",
     "chat",
 ]
 
@@ -55,7 +44,7 @@ INSTALLED_APPS = [
 # ===============================
 
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # MUST be first
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -130,7 +119,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # ===============================
-# REST FRAMEWORK
+# REST FRAMEWORK (SESSION ONLY)
 # ===============================
 
 REST_FRAMEWORK = {
@@ -144,59 +133,41 @@ REST_FRAMEWORK = {
 
 
 # ===============================
-# CORS CONFIGURATION (FINAL)
+# CORS CONFIGURATION
 # ===============================
 
-CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
-# Production domain
 CORS_ALLOWED_ORIGINS = [
-    "https://deploy-med-assist-chat-bot.vercel.app",
+    "https://deploy-medassist-chat-e425vzrnh6-hardikkhandla29-1422s-projects.vercel.app",
 ]
 
-# Allow ALL Vercel deployments (preview + future)
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://.*\.vercel\.app$",
-]
-
-
-# ===============================
-# CSRF TRUSTED ORIGINS (FINAL)
-# ===============================
-
+# VERY IMPORTANT
 CSRF_TRUSTED_ORIGINS = [
-    "https://deploy-med-assist-chat-bot.vercel.app",
-    "https://*.vercel.app",
+    "https://deploy-medassist-chat-e425vzrnh6-hardikkhandla29-1422s-projects.vercel.app",
 ]
 
 
 # ===============================
-# SESSION / SECURITY SETTINGS
+# SESSION & COOKIE SETTINGS
 # ===============================
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SESSION_COOKIE_SAMESITE = "None"
+CSRF_COOKIE_SAMESITE = "None"
 
 SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_AGE = int(os.getenv("SESSION_COOKIE_AGE", "1209600"))
 SESSION_SAVE_EVERY_REQUEST = True
-SESSION_COOKIE_SAMESITE = "Lax"
-CSRF_COOKIE_SAMESITE = "Lax"
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = True
 
 
 # ===============================
 # EMAIL
 # ===============================
 
-EMAIL_BACKEND = os.getenv(
-    "EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
-)
-
-DEFAULT_FROM_EMAIL = os.getenv(
-    "DEFAULT_FROM_EMAIL", "no-reply@medassist.local"
-)
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+DEFAULT_FROM_EMAIL = "no-reply@medassist.local"
