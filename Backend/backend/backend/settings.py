@@ -20,6 +20,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
+
 # ===============================
 # ALLOWED HOSTS
 # ===============================
@@ -110,6 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -143,7 +145,7 @@ REST_FRAMEWORK = {
 
 
 # ===============================
-# CORS CONFIGURATION (FINAL FIX)
+# CORS CONFIGURATION (FINAL)
 # ===============================
 
 CORS_ALLOW_ALL_ORIGINS = False
@@ -154,14 +156,14 @@ CORS_ALLOWED_ORIGINS = [
     "https://deploy-med-assist-chat-bot.vercel.app",
 ]
 
-# Allow ALL preview deployments from Vercel automatically
+# Allow ALL Vercel deployments (preview + future)
 CORS_ALLOWED_ORIGIN_REGEXES = [
-    r"^https://deploy-med-assist-chat-.*\.vercel\.app$",
+    r"^https://.*\.vercel\.app$",
 ]
 
 
 # ===============================
-# CSRF TRUSTED ORIGINS (FINAL FIX)
+# CSRF TRUSTED ORIGINS (FINAL)
 # ===============================
 
 CSRF_TRUSTED_ORIGINS = [
