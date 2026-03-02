@@ -24,7 +24,7 @@ except ModuleNotFoundError:
 if load_dotenv:
     load_dotenv(BASE_DIR.parent.parent / ".env")
 
-SECRET_KEY="django-insecure-*wo&=fy-59q7a3r8h!nfsjv&#+wwarps0xk54xzmjl^qavsres"
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
