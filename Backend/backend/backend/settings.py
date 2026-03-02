@@ -25,9 +25,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 # ===============================
 
 raw_allowed_hosts = os.getenv("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS = [
-    host.strip() for host in raw_allowed_hosts.split(",") if host.strip()
-]
+ALLOWED_HOSTS = [host.strip() for host in raw_allowed_hosts.split(",") if host.strip()]
 
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
@@ -112,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
-
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
 USE_I18N = True
@@ -146,34 +143,30 @@ REST_FRAMEWORK = {
 
 
 # ===============================
-# CORS CONFIGURATION
+# CORS CONFIGURATION (FINAL FIX)
 # ===============================
 
-raw_cors = os.getenv("CORS_ALLOWED_ORIGINS", "")
-
-CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in raw_cors.split(",")
-    if origin.strip()
-]
-
-# REQUIRED for session authentication
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
 
+# Production domain
+CORS_ALLOWED_ORIGINS = [
+    "https://deploy-med-assist-chat-bot.vercel.app",
+]
+
+# Allow ALL preview deployments from Vercel automatically
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://deploy-med-assist-chat-.*\.vercel\.app$",
+]
+
 
 # ===============================
-# CSRF TRUSTED ORIGINS
+# CSRF TRUSTED ORIGINS (FINAL FIX)
 # ===============================
-
-raw_csrf = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "http://localhost:5173,http://127.0.0.1:5173"
-)
 
 CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in raw_csrf.split(",")
-    if origin.strip()
+    "https://deploy-med-assist-chat-bot.vercel.app",
+    "https://*.vercel.app",
 ]
 
 
