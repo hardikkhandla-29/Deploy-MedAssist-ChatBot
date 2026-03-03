@@ -136,15 +136,18 @@ REST_FRAMEWORK = {
 # CORS CONFIGURATION
 # ===============================
 
+# ===============================
+# CORS CONFIGURATION
+# ===============================
+
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "https://deploy-medassist-chat-e425vzrnh6-hardikkhandla29-1422s-projects.vercel.app",
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https:\/\/deploy-medassist-chat-.*\.vercel\.app$",
 ]
 
-# VERY IMPORTANT
-CSRF_TRUSTED_ORIGINS = [
-    "https://deploy-medassist-chat-e425vzrnh6-hardikkhandla29-1422s-projects.vercel.app",
+CSRF_TRUSTED_ORIGIN_REGEXES = [
+    r"^https:\/\/deploy-medassist-chat-.*\.vercel\.app$",
 ]
 
 
